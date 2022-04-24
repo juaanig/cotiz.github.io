@@ -142,7 +142,6 @@ const ver_log = () => {
     
 };
 
-
 const clearing = () => {
     console.log('clear')
     document.getElementById('cantidad').value = 0;
