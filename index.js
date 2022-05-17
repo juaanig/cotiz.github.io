@@ -1,3 +1,9 @@
+// ==================== fecha ====================
+const d = new Date();
+let fecha = d.toLocaleDateString();
+document.getElementById("fecha").innerHTML = fecha;
+// ===============================================
+
 //==================== USD =====================
 fetch('https://criptoya.com/api/dolar')
 .then( response => response.json() )
@@ -13,9 +19,9 @@ const mostrar_coti = (data)=>{
             body += `
             <tr>
             <td>${key}</td>
-            <td id="${key}-price"> ${value}</td>
-            <td> ${parseInt(value-(value*0.01))}</td>
-            <td> ${parseInt(value+(value*0.01))}</td>
+            <td id="${key}-price">$ ${value}</td>
+            <td>$ ${parseInt(value-(value*0.01))}</td>
+            <td>$ ${parseInt(value+(value*0.01))}</td>
             </tr>`
 
             slc_coin += `
@@ -44,9 +50,9 @@ const display_btc = (data) => {
 
     grid_btc = 
     `<td>Bitcoin</td>
-    <td id="btc-price"> ${price} </td>
-    <td> ${buy} </td>
-    <td> ${sell} </td>
+    <td id="btc-price">usd ${price} </td>
+    <td>usd ${buy} </td>
+    <td>usd ${sell} </td>
     `
 
     document.getElementById('btc').innerHTML = grid_btc ;
@@ -67,16 +73,15 @@ const display_eth = (data) => {
 
     grid_eth = 
     `<td>Ethereum</td>
-    <td id="eth-price"> ${price} </td>
-    <td> ${buy} </td>
-    <td> ${sell} </td>
+    <td id="eth-price">usd ${price} </td>
+    <td>usd ${buy} </td>
+    <td>usd ${sell} </td>
     `
     document.getElementById('eth').innerHTML = grid_eth ;
-
 }
-//==============================================
+//============================================
 
-//=================== USDT ======================
+//=================== USDT ===================
 fetch('https://criptoya.com/api/usdt/ars/0.1')
 .then( response => response.json() )
 .then( data => display_usdt(data) )
@@ -91,51 +96,82 @@ const display_usdt = (data) => {
 
     grid_usdt = 
     `<td>Usdt</td>
-    <td id="usdt-price"> ${price} </td>
-    <td> ${buy} </td>
-    <td> ${sell} </td>
+    <td id="usdt-price">$ ${price} </td>
+    <td>$ ${buy} </td>
+    <td>$ ${sell} </td>
     `
 
     document.getElementById('usdt').innerHTML = grid_usdt ;
 }
 //==============================================
 
-
 const $select = document.getElementById('coin');
+const $select1 = document.getElementById('to-coin');
 
+/* ================= FUNCIÓN PARA CALCULADORA DE MONEDAS =================*/
 const ver_log = () => {
 
+    //________________________________________________
     const indice = $select.selectedIndex;
     const opcionSeleccionada = $select.options[indice];
+    
+    //________________________________________________
+    const indice1 = $select1.selectedIndex;
+    const opcionSeleccionada1 = $select1.options[indice1];
     
     if(indice === -1){ 
         return alert('error');
     }
     
-    if(['btc','eth','usdt'].includes(opcionSeleccionada.value) ){ 
+    if(['btc','eth','usdt'].includes(opcionSeleccionada.value)){ 
 
-        valor_conver = parseInt(document.getElementById(`${opcionSeleccionada.value}-price`).innerHTML);
+        valor_conver = document.getElementById(`${opcionSeleccionada.value}-price`).innerHTML;
         cantidad = document.getElementById('cantidad').value ;
+
+        /* EN ESTE BLOQUE DE IF SE FILTRA Y SE EXPULSA EL SIGNO PESOS O DOLAR
+            (convert this block in a function in other sheet and then import)
+        */
+        if(valor_conver.includes("usd")){
+
+            let aux = valor_conver.replace("usd","");
+            valor_conver = aux.replace(/ /g, "");
+            console.log(parseInt(valor_conver));
+                    
+        }else if(valor_conver.includes("$")){
+
+            let aux = valor_conver.replace("$","");
+            valor_conver = aux.replace(/ /g, "");
+        }
+        
+        /* TRANSFORMAMOS LOS VALORES DEL BTC Y ETH A PESOS*/
+        if(opcionSeleccionada1.value == 'pesos' && ['btc','eth'].includes(opcionSeleccionada.value)){
+            let aux2 =  (document.getElementById('usdt-price').innerHTML).replace("$","");
+            valor_conver = valor_conver * parseInt(aux2.replace(/ /g, ""));
+        }
+        
         total = cantidad/valor_conver;
-        console.log(opcionSeleccionada.value);
-        console.log(valor_conver);
-        console.log(typeof(opcionSeleccionada.value));
 
         resultado1 = `
             <p class="mt-2 text-start " id="resultado_1">Recibiras: </p>
-            <p class="mt-2 p-2 text-center border border-primary" id="resultado_1">${total}</p>
+            <p class="mt-2 p-2 text-center border border-primary" id="resultado_1">${opcionSeleccionada.value} ${total}</p>
         `
         document.getElementById('result').innerHTML = resultado1;
-    }else if(opcionSeleccionada.value == 'solidario'||'blue'||'ccb'||'ccl'||'mep'){ 
 
-        valor_conver = parseInt(document.getElementById(`${opcionSeleccionada.value}-price`).innerHTML);
+    }else if(['solidario','blue','ccb','ccl','mep'].includes(opcionSeleccionada.value) ){ 
+
+        valor_conver = document.getElementById(`${opcionSeleccionada.value}-price`).innerHTML;
         cantidad = document.getElementById('cantidad').value ;
+
+        if(valor_conver.includes("$")){
+            let aux = valor_conver.replace("$","");
+            valor_conver = aux.replace(/ /g, "");
+        } 
+
         total = (cantidad/valor_conver).toFixed(2);
+        
         resultado = `
             <p class="mt-2 p-2 text-center border border-primary " id="resultado_1">usd ${total}</p>
         `
-        console.log('dolares')
-        console.log(cantidad/valor_conver)
         
         document.getElementById('result').innerHTML = resultado;
     };
