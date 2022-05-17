@@ -153,7 +153,7 @@ const ver_log = () => {
 
         resultado1 = `
             <p class="mt-2 text-start " id="resultado_1">Recibiras: </p>
-            <p class="mt-2 p-2 text-center border border-primary" id="resultado_1">${opcionSeleccionada.value} ${total}</p>
+            <p class="mt-2 p-2 text-center border border-primary" id="resultado_2">${opcionSeleccionada.value} ${total}</p>
         `
         document.getElementById('result').innerHTML = resultado1;
 
@@ -170,7 +170,7 @@ const ver_log = () => {
         total = (cantidad/valor_conver).toFixed(2);
         
         resultado = `
-            <p class="mt-2 p-2 text-center border border-primary " id="resultado_1">usd ${total}</p>
+            <p class="mt-2 p-2 text-center border border-primary " id="resultado_2">usd ${total}</p>
         `
         
         document.getElementById('result').innerHTML = resultado;
@@ -178,10 +178,11 @@ const ver_log = () => {
     
 };
 
-const clearing = () => {
-    console.log('clear')
-    document.getElementById('cantidad').value = 0;
+function clearing(){
+
     document.getElementById('resultado_1').remove();
+    document.getElementById('resultado_2').remove();
+    document.getElementById('cantidad').value = 0;
 
 }
 
