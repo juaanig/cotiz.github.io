@@ -20,8 +20,8 @@ const mostrar_coti = (data)=>{
             <tr>
             <td>${key}</td>
             <td id="${key}-price">$ ${value}</td>
-            <td>$ ${parseInt(value-(value*0.01))}</td>
             <td>$ ${parseInt(value+(value*0.01))}</td>
+            <td>$ ${parseInt(value-(value*0.01))}</td>
             </tr>`
 
             slc_coin += `
