@@ -180,7 +180,6 @@ const ver_log = () => {
 };
 
 function clearing(){
-
     document.getElementById('resultado_1').remove();
     document.getElementById('resultado_2').remove();
     document.getElementById('cantidad').value = 0;
