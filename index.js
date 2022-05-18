@@ -170,6 +170,7 @@ const ver_log = () => {
         total = (cantidad/valor_conver).toFixed(2);
         
         resultado = `
+            <p class="mt-2 text-start " id="resultado_1">Recibiras: </p>
             <p class="mt-2 p-2 text-center border border-primary " id="resultado_2">usd ${total}</p>
         `
         
